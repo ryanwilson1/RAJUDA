@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>R. Ajuda Creator AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#050510;--glass:rgba(255,255,255,0.04);--glass2:rgba(255,255,255,0.08);
+  --border:rgba(130,80,255,0.25);--border2:rgba(130,80,255,0.5);
+  --purple:#8250ff;--blue:#3b82f6;--neon:#a78bfa;--neon2:#60a5fa;
+  --text:#e2e8f0;--muted:#94a3b8;--accent:#c4b5fd;--teal:#2dd4bf;
+  --green:#4ade80;--pink:#f472b6;--amber:#fbbf24;
+}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+body::before{content:'';position:fixed;top:-40%;left:-20%;width:700px;height:700px;background:radial-gradient(ellipse,rgba(130,80,255,0.15) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-30%;right:-10%;width:600px;height:600px;background:radial-gradient(ellipse,rgba(59,130,246,0.12) 0%,transparent 70%);pointer-events:none;z-index:0;}
+
+/* WELCOME */
+#welcome{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(5,5,16,0.97);display:flex;align-items:center;justify-content:center;z-index:999;animation:fadeWelcome 0.5s ease 2.8s forwards;}
+.welcome-box{text-align:center;padding:3rem 3.5rem;background:rgba(130,80,255,0.08);border:1px solid var(--border2);border-radius:24px;backdrop-filter:blur(20px);max-width:480px;animation:scaleIn 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+.welcome-rocket{font-size:52px;display:block;margin-bottom:1rem;animation:bounce 1.2s ease infinite;}
+.welcome-box h2{font-family:'Syne',sans-serif;font-size:1.8rem;font-weight:700;color:#fff;margin-bottom:.75rem;}
+.welcome-box p{color:var(--muted);font-size:.95rem;line-height:1.7;}
+@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes scaleIn{from{opacity:0;transform:scale(0.8)}to{opacity:1;transform:scale(1)}}
+@keyframes fadeWelcome{to{opacity:0;pointer-events:none;visibility:hidden}}
+
+/* CREATOR TAG */
+.creator-tag{font-size:.78rem;color:var(--muted);margin-bottom:.9rem;letter-spacing:.03em;line-height:1.6;}
+.creator-tag strong{color:var(--neon);}
+.creator-tag span{display:block;font-size:.72rem;color:rgba(148,163,184,0.65);margin-top:.15rem;}
+/* HEADER */
+header{position:relative;z-index:10;text-align:center;padding:3.5rem 1.5rem 2rem;}
+.logo-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(130,80,255,0.12);border:1px solid var(--border2);border-radius:50px;padding:.4rem 1.2rem;font-size:.75rem;font-family:'Syne',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--neon);margin-bottom:1.5rem;}
+.logo-dot{width:7px;height:7px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px var(--purple);}
+header h1{font-family:'Syne',sans-serif;font-size:clamp(2rem,5vw,3rem);font-weight:800;line-height:1.1;background:linear-gradient(135deg,#fff 20%,var(--neon) 60%,var(--neon2) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:.75rem;}
+header .sub{color:var(--muted);font-size:1rem;max-width:520px;margin:0 auto;line-height:1.7;}
+
+/* FIELD HINTS */
+.field-hint{font-size:.75rem;color:var(--muted);margin-top:.25rem;line-height:1.4;}
+.field-hint em{color:rgba(167,139,250,0.7);font-style:normal;}
+/* PRODUCT INPUT */
+.form-group input[type=text]{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,background .2s;width:100%;}
+.form-group input[type=text]:focus{border-color:var(--purple);background:rgba(130,80,255,0.08);}
+.form-group input[type=text]::placeholder{color:var(--muted);font-size:.85rem;}
+/* FORM GRID 4 COLS */
+.form-grid-top{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1rem;}
+.form-grid-bottom{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:620px){.form-grid-top,.form-grid-bottom{grid-template-columns:1fr}}
+
+.quick-row{display:flex;gap:.75rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.btn-quick{
+  flex:1;min-width:200px;
+  padding:.85rem 1.2rem;
+  border-radius:12px;
+  font-family:'Syne',sans-serif;font-size:.82rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.btn-idea-hoje{
+  background:linear-gradient(135deg,rgba(251,191,36,0.15),rgba(251,191,36,0.05));
+  border:1px solid rgba(251,191,36,0.35);color:var(--amber);
+}
+.btn-idea-hoje:hover{background:linear-gradient(135deg,rgba(251,191,36,0.25),rgba(251,191,36,0.1));border-color:rgba(251,191,36,0.6);box-shadow:0 0 20px rgba(251,191,36,0.15);}
+
+/* MAIN */
+main{position:relative;z-index:5;padding:0 1.5rem 6rem;}
+.container{max-width:780px;margin:0 auto;}
+
+/* FORM */
+.form-card{background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:2.5rem;backdrop-filter:blur(24px);margin-bottom:1.5rem;}
+.form-grid-legacy{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+@media(max-width:620px){.form-grid-legacy{grid-template-columns:1fr}}
+.form-group{display:flex;flex-direction:column;gap:.5rem;}
+.form-group label{font-size:.78rem;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);}
+.form-group select{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--text);padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;appearance:none;}
+.form-group select option{background:#0d0d2b;color:var(--text);}
+.form-group select:focus{border-color:var(--purple);background:rgba(130,80,255,0.08);}
+.sel-wrap{position:relative;}
+.sel-wrap::after{content:'▾';position:absolute;right:1rem;top:50%;transform:translateY(-50%);color:var(--neon);pointer-events:none;font-size:.85rem;}
+
+.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+@media(max-width:500px){.btn-row{grid-template-columns:1fr}}
+
+.btn-generate{
+  padding:1rem;background:linear-gradient(135deg,var(--purple),var(--blue));
+  border:none;border-radius:12px;color:#fff;
+  font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  cursor:pointer;position:relative;overflow:hidden;transition:transform .15s,box-shadow .2s;
+  box-shadow:0 0 30px rgba(130,80,255,0.3);
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.btn-generate:hover{transform:translateY(-2px);box-shadow:0 0 50px rgba(130,80,255,0.5);}
+.btn-generate:active{transform:scale(0.98);}
+.btn-generate:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.btn-generate.full{grid-column:1/-1;}
+
+.btn-new-version{
+  padding:1rem;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border2);border-radius:12px;color:var(--neon);
+  font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:.5rem;
+}
+.btn-new-version:hover{background:rgba(130,80,255,0.12);box-shadow:0 0 20px rgba(130,80,255,0.2);}
+.btn-new-version:disabled{opacity:.4;cursor:not-allowed;}
+
+/* LOADING */
+#loading{display:none;text-align:center;padding:3rem 0;}
+.loader{width:50px;height:50px;border:3px solid rgba(130,80,255,0.2);border-top-color:var(--purple);border-right-color:var(--neon2);border-radius:50%;animation:spin 0.8s linear infinite;margin:0 auto 1.5rem;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-text{color:var(--muted);font-size:.9rem;animation:pulseOpacity 1.5s ease infinite;}
+@keyframes pulseOpacity{0%,100%{opacity:.5}50%{opacity:1}}
+
+/* RESULTS */
+#results{display:none;}
+#results.show{display:block;animation:fadeUp .5s ease forwards;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* TIPS BANNER */
+#tips-banner{position:relative;background:linear-gradient(135deg,rgba(130,80,255,0.1),rgba(59,130,246,0.08));border:1px solid rgba(130,80,255,0.3);border-radius:16px;padding:1.1rem 1.5rem;margin-bottom:1.5rem;min-height:58px;display:flex;align-items:center;gap:1rem;overflow:hidden;}
+#tips-banner::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--purple),var(--blue));border-radius:3px 0 0 3px;}
+.tip-icon-wrap{width:36px;height:36px;border-radius:10px;flex-shrink:0;background:rgba(130,80,255,0.15);border:1px solid rgba(130,80,255,0.25);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.tip-text-wrap{flex:1;overflow:hidden;}
+.tip-slide{font-size:.9rem;color:var(--text);line-height:1.5;transition:opacity .4s ease,transform .4s ease;}
+.tip-slide.exit{opacity:0;transform:translateY(-12px);}
+.tip-slide.enter{opacity:0;transform:translateY(12px);}
+.tip-dots{display:flex;gap:5px;margin-left:auto;flex-shrink:0;align-items:center;}
+.tip-dot{width:6px;height:6px;border-radius:50%;background:rgba(130,80,255,0.25);transition:background .3s,transform .3s;cursor:pointer;}
+.tip-dot.active{background:var(--purple);transform:scale(1.3);}
+.tip-label{font-size:.7rem;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.1em;color:var(--purple);margin-bottom:.2rem;}
+
+/* RESULT CARDS */
+.result-card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:1.75rem;margin-bottom:1.25rem;backdrop-filter:blur(20px);transition:border-color .2s;}
+.result-card:hover{border-color:var(--border2);}
+.card-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid rgba(130,80,255,0.15);}
+.card-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.icon-idea{background:rgba(167,139,250,0.15);}
+.icon-caption{background:rgba(236,72,153,0.12);}
+.icon-image{background:rgba(59,130,246,0.12);}
+.icon-video{background:rgba(34,197,94,0.12);}
+.icon-cta{background:rgba(251,191,36,0.12);}
+.card-title{font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+.card-content{font-size:.93rem;line-height:1.8;color:var(--text);white-space:pre-line;}
+.card-content.prompt{background:rgba(0,0,0,0.3);border:1px solid rgba(130,80,255,0.2);border-radius:10px;padding:1rem;font-family:monospace;font-size:.85rem;color:#c4b5fd;line-height:1.6;}
+
+/* INLINE TIPS */
+.inline-tip{margin-top:.85rem;background:rgba(45,212,191,0.07);border:1px solid rgba(45,212,191,0.22);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:flex-start;gap:.6rem;}
+.inline-tip-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.inline-tip-text{font-size:.83rem;color:#81e6d9;line-height:1.6;}
+.inline-tip-text strong{color:var(--teal);font-weight:500;}
+
+.pro-tip{margin-top:.85rem;background:rgba(251,191,36,0.07);border:1px solid rgba(251,191,36,0.22);border-radius:10px;padding:.75rem 1rem;display:flex;align-items:flex-start;gap:.6rem;}
+.pro-tip-icon{font-size:1rem;flex-shrink:0;margin-top:.05rem;}
+.pro-tip-text{font-size:.83rem;color:#fde68a;line-height:1.6;}
+.pro-tip-text strong{color:var(--amber);font-weight:500;}
+.pro-tip-text code{background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.2);border-radius:4px;padding:.1rem .4rem;font-family:monospace;font-size:.8rem;color:var(--amber);}
+
+/* IMPROVE SECTION */
+#improve-section{background:linear-gradient(135deg,rgba(130,80,255,0.07),rgba(59,130,246,0.05));border:1px solid rgba(130,80,255,0.22);border-radius:18px;padding:1.75rem;margin-bottom:1.25rem;}
+.improve-header{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem;}
+.improve-title{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);}
+.improve-grid{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;}
+@media(max-width:520px){.improve-grid{grid-template-columns:1fr}}
+.improve-card{background:rgba(255,255,255,0.03);border:1px solid rgba(130,80,255,0.15);border-radius:12px;padding:1rem 1.1rem;display:flex;align-items:flex-start;gap:.75rem;transition:border-color .2s,background .2s;}
+.improve-card:hover{border-color:rgba(130,80,255,0.35);background:rgba(130,80,255,0.06);}
+.improve-card-icon{width:34px;height:34px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.95rem;}
+.ic-purple{background:rgba(130,80,255,0.15);}
+.ic-blue{background:rgba(59,130,246,0.15);}
+.ic-teal{background:rgba(45,212,191,0.12);}
+.ic-amber{background:rgba(251,191,36,0.12);}
+.improve-card-title{font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;color:var(--accent);margin-bottom:.3rem;letter-spacing:.05em;}
+.improve-card-desc{font-size:.8rem;color:var(--muted);line-height:1.55;}
+.improve-card-tag{display:inline-block;margin-top:.45rem;background:rgba(130,80,255,0.12);border:1px solid rgba(130,80,255,0.25);border-radius:6px;padding:.2rem .55rem;font-family:monospace;font-size:.72rem;color:var(--neon);}
+
+/* COPY BUTTONS */
+.copy-btn{margin-top:1rem;padding:.5rem 1.25rem;background:rgba(130,80,255,0.1);border:1px solid var(--border);border-radius:8px;color:var(--neon);font-family:'DM Sans',sans-serif;font-size:.82rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem;}
+.copy-btn:hover{background:rgba(130,80,255,0.2);border-color:var(--purple);}
+.copy-btn.copied{color:var(--green);border-color:rgba(74,222,128,0.4);}
+
+/* ACTION ROW */
+.action-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border);}
+.btn-action{flex:1;min-width:140px;padding:.7rem 1rem;border-radius:10px;font-family:'Syne',sans-serif;font-size:.82rem;font-weight:600;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.05em;}
+.btn-copy-all{background:linear-gradient(135deg,rgba(130,80,255,0.2),rgba(59,130,246,0.2));border:1px solid var(--border2);color:var(--neon);}
+.btn-copy-all:hover{background:linear-gradient(135deg,rgba(130,80,255,0.35),rgba(59,130,246,0.3));}
+.btn-regen-bottom{background:var(--glass2);border:1px solid var(--border);color:var(--muted);}
+.btn-regen-bottom:hover{color:var(--text);border-color:var(--border2);}
+
+/* HOW TO */
+.howto{background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.2);border-radius:16px;padding:1.75rem;margin-top:1.5rem;}
+.howto h3{font-family:'Syne',sans-serif;font-size:.9rem;font-weight:700;color:var(--neon2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:1rem;}
+.howto-steps{display:flex;gap:1rem;flex-wrap:wrap;}
+.step{flex:1;min-width:130px;display:flex;flex-direction:column;gap:.35rem;}
+.step-num{width:28px;height:28px;border-radius:50%;background:rgba(59,130,246,0.15);border:1px solid rgba(59,130,246,0.3);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:.75rem;font-weight:700;color:var(--neon2);}
+.step p{font-size:.83rem;color:var(--muted);line-height:1.5;}
+
+/* ── CONVERSION CARD ──────────────── */
+#conversion-card{
+  position:relative;overflow:hidden;
+  margin:1.75rem 0;
+  background:linear-gradient(135deg,rgba(37,211,102,0.1) 0%,rgba(18,140,126,0.07) 50%,rgba(130,80,255,0.08) 100%);
+  border:1px solid rgba(37,211,102,0.4);
+  border-radius:20px;padding:2rem 2rem 1.75rem;text-align:center;
+  box-shadow:0 0 40px rgba(37,211,102,0.08),0 0 80px rgba(130,80,255,0.06);
+  animation:fadeUp .5s ease forwards;
+}
+#conversion-card::before{
+  content:'';position:absolute;top:-60px;right:-60px;
+  width:220px;height:220px;
+  background:radial-gradient(ellipse,rgba(37,211,102,0.12) 0%,transparent 70%);
+  pointer-events:none;
+}
+#conversion-card::after{
+  content:'';position:absolute;bottom:-40px;left:-40px;
+  width:160px;height:160px;
+  background:radial-gradient(ellipse,rgba(130,80,255,0.1) 0%,transparent 70%);
+  pointer-events:none;
+}
+.conv-card-eyebrow{font-size:.7rem;font-family:'Syne',sans-serif;text-transform:uppercase;letter-spacing:.14em;color:rgba(37,211,102,0.8);margin-bottom:.6rem;}
+.conv-card-title{font-family:'Syne',sans-serif;font-size:1.25rem;font-weight:800;color:#fff;margin-bottom:.5rem;line-height:1.35;}
+.conv-card-sub{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:1.5rem;}
+.conv-card-sub strong{color:rgba(255,255,255,0.85);}
+.btn-wa-main{
+  display:inline-flex;align-items:center;justify-content:center;gap:.6rem;
+  padding:.95rem 2rem;border-radius:14px;border:none;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  color:#fff;font-family:'Syne',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 0 30px rgba(37,211,102,0.4),0 4px 16px rgba(0,0,0,0.3);
+}
+.btn-wa-main:hover{transform:translateY(-3px);box-shadow:0 0 50px rgba(37,211,102,0.55),0 8px 24px rgba(0,0,0,0.35);}
+.btn-wa-main:active{transform:scale(0.97);}
+
+/* ── URGÊNCIA & PROVA SOCIAL ────────────────────────── */
+.conv-urgency{
+  font-size:.78rem;font-family:'Syne',sans-serif;letter-spacing:.06em;
+  color:rgba(251,191,36,0.85);
+  margin-bottom:.55rem;
+  display:inline-flex;align-items:center;gap:.35rem;
+}
+.conv-proof{
+  font-size:.84rem;color:rgba(148,163,184,0.75);
+  margin-bottom:1.4rem;
+  font-style:italic;
+  line-height:1.5;
+}
+
+/* ── MOBILE OPTIMIZATIONS ───────────────────────────── */
+@media(max-width:480px){
+  /* Formulário */
+  .form-card{padding:1.5rem 1.1rem;}
+  .form-group select,.form-group input[type=text]{font-size:1rem;padding:.85rem .9rem;}
+
+  /* Botões grandes para toque */
+  .btn-generate{font-size:1rem;padding:1.1rem;}
+  .btn-new-version{font-size:.9rem;padding:1rem;}
+  .btn-wa-main{width:100%;padding:1.1rem 1.25rem;font-size:1rem;}
+  .btn-instagram,.btn-whatsapp{width:100%;padding:.9rem 1.25rem;font-size:.9rem;}
+  .btn-stt-wa{padding:.65rem .9rem;font-size:.82rem;}
+  .btn-quick{min-width:100%;font-size:.85rem;padding:1rem;}
+
+  /* Card de conversão */
+  #conversion-card{padding:1.5rem 1.1rem;}
+  .conv-card-title{font-size:1.05rem;}
+  .conv-card-sub{font-size:.86rem;}
+  .conv-buttons{flex-direction:column;}
+
+  /* Save-time tip — empilha no mobile */
+  .save-time-tip{flex-wrap:wrap;}
+  .btn-stt-wa{width:100%;text-align:center;}
+
+  /* Botão flutuante — margem para não cobrir conteúdo */
+  #float-wa{bottom:16px;right:16px;width:50px;height:50px;font-size:1.25rem;}
+  main{padding-bottom:90px;}
+
+  /* Cards de resultado */
+  .result-card{padding:1.25rem;}
+  .card-content{font-size:.88rem;}
+  .card-content.prompt{font-size:.8rem;}
+
+  /* Howto steps */
+  .howto-steps{flex-direction:column;}
+  .step{min-width:100%;}
+
+  /* Action row */
+  .action-row{flex-direction:column;}
+  .btn-action{width:100%;text-align:center;}
+
+  /* Instagram footer */
+  .insta-footer{padding:1.35rem 1rem;}
+  .insta-footer .conv-buttons{flex-direction:column;}
+
+  /* Welcome box */
+  .welcome-box{padding:2rem 1.5rem;margin:1rem;}
+  .welcome-box h2{font-size:1.4rem;}
+
+  /* Tips banner */
+  #tips-banner{flex-wrap:wrap;gap:.6rem;}
+  .tip-dots{display:none;}
+}
+
+/* ── INLINE SAVE-TIME TIP ───────────────────────────── */
+.save-time-tip{
+  display:flex;align-items:center;gap:1rem;
+  background:rgba(251,191,36,0.06);
+  border:1px solid rgba(251,191,36,0.28);
+  border-radius:14px;padding:1rem 1.25rem;margin-bottom:1.25rem;
+}
+.stt-icon{font-size:1.3rem;flex-shrink:0;}
+.stt-text{font-size:.87rem;color:var(--text);line-height:1.55;flex:1;}
+.stt-text strong{color:var(--amber);}
+.btn-stt-wa{
+  flex-shrink:0;padding:.55rem 1.1rem;border-radius:10px;border:1px solid rgba(37,211,102,0.5);
+  background:rgba(37,211,102,0.1);color:#4ade80;
+  font-family:'Syne',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.04em;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn-stt-wa:hover{background:rgba(37,211,102,0.2);box-shadow:0 0 16px rgba(37,211,102,0.2);}
+
+/* ── INSTAGRAM FOOTER CTA ───────────────────────────── */
+.insta-footer{
+  margin-top:1.5rem;
+  text-align:center;
+  background:linear-gradient(135deg,rgba(131,58,180,0.1),rgba(253,29,29,0.07),rgba(252,176,69,0.06));
+  border:1px solid rgba(131,58,180,0.3);
+  border-radius:18px;padding:1.75rem 1.5rem;
+}
+.insta-footer-title{font-family:'Syne',sans-serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:.35rem;}
+.insta-footer-sub{font-size:.87rem;color:var(--muted);margin-bottom:1.1rem;line-height:1.55;}
+
+/* ── FLOAT WA LABEL ─────────────────────────────────── */
+#float-wa-label{
+  position:fixed;bottom:31px;right:88px;z-index:499;
+  background:rgba(10,10,30,0.96);border:1px solid rgba(37,211,102,0.35);
+  border-radius:10px;padding:.45rem .9rem;
+  font-size:.78rem;color:#4ade80;white-space:nowrap;
+  pointer-events:none;
+  opacity:0;transform:translateX(8px);
+  transition:opacity .22s,transform .22s;
+}
+#float-wa:hover~#float-wa-label{opacity:1;transform:translateX(0);}
+
+/* HIDE OLD FLOAT TOOLTIP */
+#float-wa-tooltip{display:none!important;}
+
+/* ── CONVERSION BLOCK ───────────── */
+.conversion-block{
+  margin-top:2rem;
+  background:linear-gradient(135deg,rgba(130,80,255,0.12),rgba(59,130,246,0.08));
+  border:1px solid rgba(130,80,255,0.4);
+  border-radius:20px;
+  padding:2rem 2rem 1.75rem;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.conversion-block::before{
+  content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:200px;height:200px;
+  background:radial-gradient(ellipse,rgba(130,80,255,0.2) 0%,transparent 70%);
+  pointer-events:none;
+}
+.conv-emoji{font-size:2.2rem;display:block;margin-bottom:.75rem;}
+.conv-title{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:.5rem;}
+.conv-sub{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:1.5rem;}
+.conv-buttons{display:flex;gap:.85rem;justify-content:center;flex-wrap:wrap;}
+
+.btn-instagram{
+  padding:.75rem 1.6rem;border-radius:12px;
+  background:linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+  border:none;color:#fff;
+  font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;
+  cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:.5rem;
+  box-shadow:0 0 25px rgba(131,58,180,0.4);
+}
+.btn-instagram:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(131,58,180,0.6);}
+.btn-instagram:active{transform:scale(0.97);}
+
+.btn-whatsapp{
+  padding:.75rem 1.6rem;border-radius:12px;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  border:none;color:#fff;
+  font-family:'Syne',sans-serif;font-size:.85rem;font-weight:700;
+  cursor:pointer;transition:all .2s;
+  display:inline-flex;align-items:center;gap:.5rem;
+  box-shadow:0 0 25px rgba(37,211,102,0.3);
+}
+.btn-whatsapp:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(37,211,102,0.5);}
+.btn-whatsapp:active{transform:scale(0.97);}
+
+/* ── FLOATING WHATSAPP ────────────────────────────── */
+#float-wa{
+  position:fixed;bottom:24px;right:24px;z-index:500;
+  width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,#25d366,#128c7e);
+  border:2px solid rgba(37,211,102,0.5);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;cursor:pointer;
+  box-shadow:0 0 20px rgba(37,211,102,0.4),0 4px 12px rgba(0,0,0,0.4);
+  transition:all .2s;
+  animation:floatPulse 3s ease infinite;
+}
+#float-wa:hover{transform:scale(1.12);box-shadow:0 0 35px rgba(37,211,102,0.6);}
+@keyframes floatPulse{0%,100%{box-shadow:0 0 20px rgba(37,211,102,0.4),0 4px 12px rgba(0,0,0,0.4)}50%{box-shadow:0 0 35px rgba(37,211,102,0.6),0 4px 12px rgba(0,0,0,0.4)}}
+#float-wa-tooltip{
+  position:fixed;bottom:24px;right:86px;z-index:499;
+  background:rgba(10,10,30,0.95);border:1px solid rgba(37,211,102,0.3);
+  border-radius:10px;padding:.5rem .85rem;
+  font-size:.78rem;color:#81e6d9;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+}
+#float-wa:hover + #float-wa-tooltip,#float-wa-tooltip:hover{opacity:1;}
+</style>
+</head>
+<body>
+
+<!-- GA placeholder — substitua G-XXXXXXXX pelo seu ID real -->
+<script>
+try{
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){try{dataLayer.push(arguments);}catch(e){}}
+  gtag('js',new Date());
+  gtag('config','G-XXXXXXXX');
+}catch(e){}
+function trackEvent(action,label){try{if(typeof gtag==='function')gtag('event',action,{event_category:'r_ajuda_creator',event_label:label});}catch(e){}}
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXX" onerror=""></script>
+
+<div id="welcome">
+  <div class="welcome-box">
+    <span class="welcome-rocket">🚀</span>
+    <h2>Bem-vindo ao R. Ajuda Creator AI</h2>
+    <p>Criei essa ferramenta para te ajudar a criar conteúdos incríveis de forma rápida e simples. Aproveite!</p>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<div id="float-wa" title="Fale comigo">💬</div>
+<div id="float-wa-tooltip">💬 Fale comigo</div>
+<div id="float-wa-label">💬 Fale comigo</div>
+
+<header>
+  <div class="creator-tag">Criado por <strong>Ryan Wilson</strong> | BH SaaS<span>Soluções inteligentes para ajudar seu negócio a crescer</span></div>
+  <div class="logo-badge"><span class="logo-dot"></span>R. Ajuda Creator AI<span class="logo-dot"></span></div>
+  <h1>Crie conteúdos incríveis<br>com IA em segundos 🚀</h1>
+  <p class="sub">Preencha os campos abaixo e gere ideias, legendas, prompts de imagem e muito mais para suas redes sociais.</p>
+</header>
+
+<main>
+<div class="container">
+
+  <!-- QUICK ACTIONS -->
+  <div class="quick-row">
+    <button class="btn-quick btn-idea-hoje" id="btnIdeiaHoje">⚡ Ideia para Hoje — Gerar Agora!</button>
+  </div>
+
+  <!-- FORM -->
+  <div class="form-card">
+    <div class="form-grid-top">
+      <div class="form-group">
+        <label>🏷️ Nicho</label>
+        <div class="sel-wrap">
+          <select id="niche">
+            <option value="">Selecione...</option>
+            <option>Restaurante / Gastronomia</option>
+            <option>Loja de Roupas / Moda</option>
+            <option>Estética / Beleza</option>
+            <option>Academia / Fitness</option>
+            <option>Imobiliária</option>
+            <option>Tecnologia / SaaS</option>
+            <option>Pet Shop</option>
+            <option>Odontologia</option>
+            <option>Marketing Digital</option>
+            <option>E-commerce</option>
+          </select>
+        </div>
+        <span class="field-hint">Qual é o seu tipo de negócio? <em>Ex: restaurante, loja, estética</em></span>
+      </div>
+      <div class="form-group">
+        <label>🎯 Objetivo</label>
+        <div class="sel-wrap">
+          <select id="goal">
+            <option value="">Selecione...</option>
+            <option>Vender / Converter</option>
+            <option>Engajar / Interagir</option>
+            <option>Crescer / Alcançar</option>
+            <option>Educar / Informar</option>
+            <option>Fidelizar Clientes</option>
+          </select>
+        </div>
+        <span class="field-hint">O que você quer com esse post? <em>Ex: vender, atrair clientes</em></span>
+      </div>
+      <div class="form-group">
+        <label>📋 Tipo de Conteúdo</label>
+        <div class="sel-wrap">
+          <select id="type">
+            <option value="">Selecione...</option>
+            <option>Promoção / Oferta</option>
+            <option>Dica / Tutorial</option>
+            <option>Novidade / Lançamento</option>
+            <option>Bastidores / BTS</option>
+            <option>Depoimento / Prova Social</option>
+            <option>Tendência / Trend</option>
+          </select>
+        </div>
+        <span class="field-hint">Como você quer o post? <em>Ex: promoção, dica ou novidade</em></span>
+      </div>
+    </div>
+    <div class="form-grid-bottom">
+      <div class="form-group" style="grid-column:1/-1">
+        <label>🧾 Produto ou Serviço <span style="color:var(--pink);font-size:.7rem;margin-left:.3rem;">obrigatório</span></label>
+        <input type="text" id="product" placeholder="Ex: hambúrguer artesanal, caldo quente, roupas de tricô, serviços de pintura" maxlength="120">
+        <span class="field-hint">O que exatamente você está oferecendo? <em>Seja específico — isso deixa o conteúdo muito mais personalizado!</em></span>
+      </div>
+    </div>
+    <div class="btn-row" id="btnRow">
+      <button class="btn-generate full" id="genBtn">🚀 Criar Conteúdo com IA</button>
+    </div>
+  </div>
+
+  <div id="loading">
+    <div class="loader"></div>
+    <p class="load-text" id="load-msg">Gerando conteúdo inteligente para você...</p>
+  </div>
+
+  <div id="results">
+    <!-- ROTATING TIPS -->
+    <div id="tips-banner">
+      <div class="tip-icon-wrap" id="tip-icon">💡</div>
+      <div class="tip-text-wrap">
+        <div class="tip-label">Dica rápida</div>
+        <div class="tip-slide" id="tip-text">Use esse prompt no ChatGPT ou Gemini para gerar imagens incríveis</div>
+      </div>
+      <div class="tip-dots" id="tip-dots"></div>
+    </div>
+
+    <!-- CARDS -->
+    <div class="result-card">
+      <div class="card-header"><div class="card-icon icon-idea">💡</div><span class="card-title">Ideia Estratégica de Conteúdo</span></div>
+      <div class="card-content" id="res-idea"></div>
+    </div>
+    <div class="result-card">
+      <div class="card-header"><div class="card-icon icon-caption">🧠</div><span class="card-title">Legenda Completa para Instagram</span></div>
+      <div class="card-content" id="res-caption"></div>
+      <button class="copy-btn" data-copy-target="res-caption" data-copy-label="Legenda">📋 Copiar e Usar</button>
+    </div>
+    <div class="result-card">
+      <div class="card-header"><div class="card-icon icon-image">🎨</div><span class="card-title">Prompt Profissional para Imagem IA</span></div>
+      <div class="card-content prompt" id="res-image"></div>
+      <div class="inline-tip">
+        <span class="inline-tip-icon">💡</span>
+        <span class="inline-tip-text"><strong>Dica:</strong> Esse prompt também pode ser usado para fotos pessoais! Basta adaptar os elementos para o seu rosto, produto ou cenário — blz? 😉</span>
+      </div>
+      <div class="pro-tip">
+        <span class="pro-tip-icon">⚡</span>
+        <span class="pro-tip-text"><strong>Dica PRO:</strong> Para mais realismo, adicione <code>cinematic lighting</code>, <code>ultra realistic</code>, <code>4K</code> ao final do prompt antes de gerar.</span>
+      </div>
+      <button class="copy-btn" data-copy-target="res-image" data-copy-label="Prompt Imagem">📋 Copiar e Usar</button>
+    </div>
+    <div class="result-card">
+      <div class="card-header"><div class="card-icon icon-video">🎬</div><span class="card-title">Prompt para Vídeo (Reels / TikTok)</span></div>
+      <div class="card-content prompt" id="res-video"></div>
+      <button class="copy-btn" data-copy-target="res-video" data-copy-label="Prompt Vídeo">📋 Copiar e Usar</button>
+    </div>
+    <div class="result-card">
+      <div class="card-header"><div class="card-icon icon-cta">📢</div><span class="card-title">CTA — Chamada para Ação</span></div>
+      <div class="card-content" id="res-cta"></div>
+    </div>
+
+    <!-- SAVE TIME TIP -->
+    <div class="save-time-tip">
+      <span class="stt-icon">💡</span>
+      <span class="stt-text"><strong>Dica:</strong> Quer economizar tempo? Posso montar tudo pronto pra você 😉 — estratégia, legenda, artes e muito mais.</span>
+      <button class="btn-stt-wa" id="btnSttWa">💬 Falar agora</button>
+    </div>
+
+    <!-- IMPROVE -->
+    <div id="improve-section">
+      <div class="improve-header"><div class="card-icon icon-image">📈</div><span class="improve-title">Melhore seu Resultado</span></div>
+      <div class="improve-grid">
+        <div class="improve-card"><div class="improve-card-icon ic-purple">🎯</div><div><div class="improve-card-title">Realismo Máximo</div><div class="improve-card-desc">Termos que elevam a qualidade gerada.</div><span class="improve-card-tag">ultra realistic</span> <span class="improve-card-tag">photorealistic</span></div></div>
+        <div class="improve-card"><div class="improve-card-icon ic-blue">🔆</div><div><div class="improve-card-title">Qualidade</div><div class="improve-card-desc">Resolução para resultados nítidos.</div><span class="improve-card-tag">4K</span> <span class="improve-card-tag">high detail</span></div></div>
+        <div class="improve-card"><div class="improve-card-icon ic-teal">💡</div><div><div class="improve-card-title">Iluminação</div><div class="improve-card-desc">Transforma imagem comum em profissional.</div><span class="improve-card-tag">cinematic lighting</span></div></div>
+        <div class="improve-card"><div class="improve-card-icon ic-amber">✏️</div><div><div class="improve-card-title">Seja Específico</div><div class="improve-card-desc">Mais detalhe = resultado mais incrível.</div><span class="improve-card-tag">descreva mood</span></div></div>
+      </div>
+    </div>
+
+    <!-- ACTION ROW -->
+    <div class="action-row">
+      <button class="btn-action btn-copy-all" id="btnCopyAll">📎 Copiar Tudo</button>
+      <button class="btn-action btn-regen-bottom" id="btnRegenBottom">🔄 Criar Nova Versão</button>
+    </div>
+
+    <!-- MAIN CONVERSION CARD -->
+    <div id="conversion-card">
+      <div class="conv-card-eyebrow">✦ Serviço Personalizado</div>
+      <div class="conv-card-title">🚀 Quer algo ainda mais profissional<br>e personalizado para o seu negócio?</div>
+      <div class="conv-card-sub">Eu posso criar isso pra você — <strong>estratégia, conteúdo, artes e scripts</strong> feitos sob medida para o seu nicho.<br>Sem template. Sem fórmula genérica. Só resultado.</div>
+      <div class="conv-urgency">⚡ Atendo poucas demandas por semana</div>
+      <div class="conv-proof">💬 Já ajudei vários negócios a criarem conteúdos melhores com isso</div>
+      <button class="btn-wa-main" id="btnWaMain">
+        <span>💬</span> Falar comigo no WhatsApp
+      </button>
+    </div>
+
+    <!-- HOW TO -->
+    <div class="howto">
+      <h3>📌 Como usar seu prompt</h3>
+      <div class="howto-steps">
+        <div class="step"><div class="step-num">1</div><p>Copie o prompt de imagem gerado acima</p></div>
+        <div class="step"><div class="step-num">2</div><p>Cole no ChatGPT, Gemini, Midjourney ou Ideogram</p></div>
+        <div class="step"><div class="step-num">3</div><p>Gere sua imagem com qualidade profissional</p></div>
+        <div class="step"><div class="step-num">4</div><p>Use junto com a legenda no seu post</p></div>
+      </div>
+    </div>
+
+    <!-- INSTAGRAM FOOTER CTA -->
+    <div class="insta-footer">
+      <div class="insta-footer-title">✨ Gostou da ferramenta?</div>
+      <div class="insta-footer-sub">Siga no Instagram para mais ferramentas e dicas — blz? 😉</div>
+      <div class="conv-buttons">
+        <button class="btn-instagram" id="btnInstagram">
+          <span>📸</span> Me seguir no Instagram
+        </button>
+        <button class="btn-whatsapp" id="btnWaFooter">
+          <span>💬</span> Fale comigo
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /results -->
+</div>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+/* ─── CONFIG ──────────────────────────────── */
+var INSTAGRAM_URL  = 'https://www.instagram.com/bhsaas.tec?igsh=MWJxeGI3bXZtZ3p6ZQ%3D%3D&utm_source=qr';
+var WHATSAPP_BASE  = '5511940198651';
+
+/* ─── CLIPBOARD SEGURO (fallback para todos os navegadores) ─── */
+function safeCopy(text){
+  return new Promise(function(resolve,reject){
+    try{
+      if(navigator.clipboard&&navigator.clipboard.writeText&&window.isSecureContext){
+        navigator.clipboard.writeText(text).then(resolve).catch(function(){
+          fallbackCopy(text)?resolve():reject();
+        });
+      }else{
+        fallbackCopy(text)?resolve():reject();
+      }
+    }catch(e){
+      fallbackCopy(text)?resolve():reject(e);
+    }
+  });
+}
+function fallbackCopy(text){
+  try{
+    var ta=document.createElement('textarea');
+    ta.value=text;
+    ta.style.cssText='position:fixed;left:-9999px;top:-9999px;opacity:0';
+    document.body.appendChild(ta);
+    ta.focus();ta.select();
+    var ok=document.execCommand('copy');
+    document.body.removeChild(ta);
+    return ok;
+  }catch(e){return false;}
+}
+
+/* ─── WHATSAPP / INSTAGRAM ─── */
+function buildWhatsAppMsg(){
+  try{
+    var niche=(document.getElementById('niche')||{}).value||'';
+    var product=(document.getElementById('product')||{}).value||'';
+    var nichoStr=niche?niche:'meu negócio';
+    var produtoStr=product?product:'meu produto/serviço';
+    var msg='Olá! Usei o Rajuda Creator AI 👀\nMeu negócio é: '+nichoStr+'\nEstou oferecendo: '+produtoStr+'\nQuero algo mais profissional e personalizado para postar.';
+    return encodeURIComponent(msg);
+  }catch(e){return encodeURIComponent('Olá! Vim pelo Rajuda Creator AI');}
+}
+
+function openInstagram(){
+  try{trackEvent('click','instagram_follow');}catch(e){}
+  window.open(INSTAGRAM_URL,'_blank','noopener,noreferrer');
+}
+
+function openWhatsApp(origem){
+  try{
+    if(typeof gtag==='function'){
+      gtag('event','click_whatsapp',{event_category:'conversao',event_label:'botao_whatsapp',origem:origem});
+    }
+    trackEvent('click','whatsapp_'+origem);
+  }catch(e){}
+  var url='https://wa.me/'+WHATSAPP_BASE+'?text='+buildWhatsAppMsg();
+  window.open(url,'_blank','noopener,noreferrer');
+}
+
+/* ─── DATA ─── */
+var NICHES=['Restaurante / Gastronomia','Loja de Roupas / Moda','Estética / Beleza','Academia / Fitness','Imobiliária','Tecnologia / SaaS','Pet Shop','Odontologia','Marketing Digital','E-commerce'];
+var GOALS=['Vender / Converter','Engajar / Interagir','Crescer / Alcançar','Educar / Informar','Fidelizar Clientes'];
+var TYPES=['Promoção / Oferta','Dica / Tutorial','Novidade / Lançamento','Bastidores / BTS','Depoimento / Prova Social','Tendência / Trend'];
+
+var NICHE_MAP={'Restaurante / Gastronomia':{scene:'restaurant food dish',visual:'cinematic food photography, dark matte background',product:'prato gourmet artesanal',emoji:'🍽️'},'Loja de Roupas / Moda':{scene:'fashion clothing lifestyle',visual:'editorial fashion photography, clean studio',product:'look exclusivo da coleção',emoji:'👗'},'Estética / Beleza':{scene:'beauty salon skincare treatment',visual:'soft diffused light, pastel aesthetic, luxury spa',product:'tratamento estético premium',emoji:'✨'},'Academia / Fitness':{scene:'gym athlete fitness training',visual:'dramatic sports lighting, high contrast, motivational',product:'resultado de treino',emoji:'💪'},'Imobiliária':{scene:'modern luxury apartment interior',visual:'architectural photography, golden hour light, wide angle',product:'imóvel dos sonhos',emoji:'🏠'},'Tecnologia / SaaS':{scene:'modern workspace tech setup dashboard UI',visual:'clean minimal tech aesthetic, blue ambient light, futuristic',product:'solução tecnológica',emoji:'💻'},'Pet Shop':{scene:'cute happy pet dog cat grooming',visual:'warm natural light, playful bright colors, lifestyle',product:'pet feliz e saudável',emoji:'🐾'},'Odontologia':{scene:'dental clinic modern treatment smile',visual:'clinical white bright lighting, professional medical',product:'sorriso perfeito',emoji:'😁'},'Marketing Digital':{scene:'digital marketing analytics strategy growth',visual:'neon tech aesthetic, dark background, data visualization',product:'estratégia digital',emoji:'📈'},'E-commerce':{scene:'product flat lay lifestyle photography',visual:'commercial product photography, white background, high detail',product:'produto em destaque',emoji:'🛍️'}};
+var GOAL_MAP={'Vender / Converter':{hook:'Não perca essa oportunidade!',tone:'urgente e persuasivo'},'Engajar / Interagir':{hook:'Você concorda com isso?',tone:'conversacional e instigante'},'Crescer / Alcançar':{hook:'Descubra o que todos estão falando!',tone:'viral e informativo'},'Educar / Informar':{hook:'Você sabia disso?',tone:'educativo e didático'},'Fidelizar Clientes':{hook:'Feito especialmente pra você!',tone:'caloroso e exclusivo'}};
+var TYPE_MAP={'Promoção / Oferta':{tag:'PROMOÇÃO',angle:'oferta irresistível por tempo limitado'},'Dica / Tutorial':{tag:'DICA DO DIA',angle:'dica prática e valiosa'},'Novidade / Lançamento':{tag:'NOVIDADE',angle:'lançamento exclusivo imperdível'},'Bastidores / BTS':{tag:'BASTIDORES',angle:'processo e humanização da marca'},'Depoimento / Prova Social':{tag:'RESULTADO REAL',angle:'transformação e prova social'},'Tendência / Trend':{tag:'TENDÊNCIA',angle:'trend atual do mercado'}};
+var EMOJI_SETS=[['🔥','⚡','💥'],['✨','🌟','💫'],['🎯','🚀','💡'],['👑','💎','🏆']];
+var HASHTAG_POOLS={'Restaurante / Gastronomia':'#foodphotography #gastronomia #restaurante #foodlover #comidaboa #chefe #receitasdobrasil','Loja de Roupas / Moda':'#moda #fashion #lookdodia #estilo #ootd #tendencias #modafeminina','Estética / Beleza':'#beleza #skincare #estetica #autocuidado #tratamento #skincareroutine #pele','Academia / Fitness':'#fitness #treino #academia #saude #musculacao #cardio #lifestyle','Imobiliária':'#imoveisdeluxo #realstate #investimento #casadossonhos #imoveis #arquitetura','Tecnologia / SaaS':'#tech #tecnologia #inovacao #software #digital #startup #produtividade','Pet Shop':'#petlovers #cachorros #gatos #petshop #animaisdeestimacao #petcare','Odontologia':'#sorriso #odontologia #dentista #saúdebucal #esteticadental #autoconfianca','Marketing Digital':'#marketingdigital #socialmedia #negociosonline #empreendedorismo #crescimento','E-commerce':'#ecommerce #compraonline #lojavirtual #produto #compras #tendencia'};
+var CAPTION_INTROS=['Você merece o melhor,\ne é exatamente isso que temos para você.✨','A gente sabe o que você procura —\ne criamos pensando em você. 💫','Resultados reais começam com escolhas certas.\nConheça o que realmente faz diferença.','Está pronto para dar o próximo nível?\nIsso foi criado especialmente para você. 🚀','Menos enrolação, mais resultado.\nÉ exatamente isso que você vai encontrar aqui.'];
+var STRATEGIES=['Explore o gatilho de escassez ao combinar promoção com prazo limitado, gerando urgência e impulsionando ação imediata.','Humanize sua marca mostrando o processo por trás do produto. As pessoas compram de quem confiam.','Use a prova social a seu favor: um resultado real vale mais do que mil argumentos de venda.','Posicione-se como autoridade do nicho entregando conteúdo educativo gratuito — cria reciprocidade e confiança.','Aposte no storytelling emocional: conecte o produto a uma transformação de vida do cliente.','Explore a curiosidade com um gancho forte na primeira linha — faça o usuário parar o scroll.'];
+var VIDEO_INTROS=['Crie um Reels dinâmico de 15-30 segundos','Produza um TikTok rápido e envolvente','Grave um vídeo curto e impactante'];
+var HOOKS=['Você não vai acreditar','Isso vai mudar tudo para você','A maioria das pessoas não sabe disso','O segredo que ninguém te conta','Chegou a hora de mudar o jogo','Não deixa para depois'];
+var LOAD_MSGS=['Gerando conteúdo inteligente para você...','Criando nova variação única...','Ativando modo criativo da IA...','Montando sua estratégia de conteúdo...'];
+var TIPS=[{icon:'💡',text:'Use esse prompt no <strong>ChatGPT ou Gemini</strong> para gerar imagens incríveis com um clique.'},{icon:'🔄',text:'Troque os elementos do prompt para <strong>adaptar ao seu produto</strong>, rosto ou cenário específico.'},{icon:'🎬',text:'Adicione <strong>"cinematic lighting"</strong> no prompt para um visual cinematográfico e mais profissional.'},{icon:'📸',text:'Você pode usar os prompts gerados para <strong>fotos pessoais</strong> também — é só adaptar!'},{icon:'✏️',text:'Quanto mais <strong>detalhado e específico</strong> for o prompt, mais impressionante será o resultado.'},{icon:'🎨',text:'Experimente <strong>"shallow depth of field"</strong> para aquele efeito de foco profissional.'},{icon:'⚡',text:'Para Reels, use <strong>cortes a cada 2-3 segundos</strong> e música trending para maior alcance.'},{icon:'🌟',text:'Publique entre <strong>18h–21h</strong> para atingir o pico de usuários ativos.'}];
+var PRODUCT_EXAMPLES=['hambúrguer artesanal','caldo de cana gelado','bolo no pote','roupas de tricô','serviços de pintura','massagem relaxante','sobrancelha design','consultoria de marketing','adestramento de cães','conjunto fitness'];
+
+var tipIndex=0,tipTimer=null;
+
+function randPick(arr){return arr[Math.floor(Math.random()*arr.length)];}
+function shuffle(arr){return arr.slice().sort(function(){return Math.random()-0.5;});}
+function setSelect(id,val){try{var s=document.getElementById(id);if(!s)return;for(var i=0;i<s.options.length;i++)if(s.options[i].value===val){s.selectedIndex=i;break;}}catch(e){}}
+
+function buildDots(){try{var w=document.getElementById('tip-dots');if(!w)return;w.innerHTML='';TIPS.forEach(function(_,i){var d=document.createElement('div');d.className='tip-dot'+(i===0?' active':'');d.addEventListener('click',function(){goToTip(i);});w.appendChild(d);});}catch(e){}}
+
+function goToTip(idx){
+  try{
+    clearTimeout(tipTimer);
+    var el=document.getElementById('tip-text');
+    var ic=document.getElementById('tip-icon');
+    if(!el||!ic)return;
+    el.classList.add('exit');
+    setTimeout(function(){
+      tipIndex=idx;
+      el.innerHTML=TIPS[tipIndex].text;
+      ic.textContent=TIPS[tipIndex].icon;
+      el.classList.remove('exit');
+      el.classList.add('enter');
+      setTimeout(function(){el.classList.remove('enter');},50);
+      document.querySelectorAll('.tip-dot').forEach(function(d,i){d.classList.toggle('active',i===tipIndex);});
+      scheduleTip();
+    },380);
+  }catch(e){}
+}
+
+function scheduleTip(){try{tipTimer=setTimeout(function(){goToTip((tipIndex+1)%TIPS.length);},4000);}catch(e){}}
+
+function ideaHoje(){
+  try{trackEvent('click','ideia_hoje');}catch(e){}
+  try{
+    setSelect('niche',randPick(NICHES));
+    setSelect('goal',randPick(GOALS));
+    setSelect('type',randPick(TYPES));
+    var prodEl=document.getElementById('product');
+    if(prodEl)prodEl.value=randPick(PRODUCT_EXAMPLES);
+    generate(false,'⚡ Gerando ideia do dia...');
+  }catch(e){console.error('ideaHoje error:',e);}
+}
+
+function generate(isNewVersion,customMsg){
+  try{
+    var niche=document.getElementById('niche').value;
+    var goal=document.getElementById('goal').value;
+    var type=document.getElementById('type').value;
+    var product=document.getElementById('product').value.trim();
+    if(!niche||!goal||!type){alert('Por favor, preencha todos os campos!');return;}
+    if(!product){
+      var el=document.getElementById('product');
+      if(el){el.focus();el.style.borderColor='var(--pink)';setTimeout(function(){el.style.borderColor='';},2000);}
+      alert('⚠️ Preencha o campo "Produto ou Serviço" para gerar conteúdo personalizado!');
+      return;
+    }
+    try{trackEvent('click',isNewVersion?'nova_versao':'gerar_conteudo');}catch(e){}
+    var loadMsg=document.getElementById('load-msg');
+    if(loadMsg)loadMsg.textContent=customMsg||(isNewVersion?randPick(LOAD_MSGS):LOAD_MSGS[0]);
+    var loadEl=document.getElementById('loading');
+    if(loadEl)loadEl.style.display='block';
+    var r=document.getElementById('results');
+    if(r){r.classList.remove('show');r.style.display='none';}
+    var genBtn=document.getElementById('genBtn');
+    if(genBtn)genBtn.disabled=true;
+    var nvBtn=document.getElementById('nvBtn');
+    if(nvBtn)nvBtn.disabled=true;
+
+    setTimeout(function(){
+      try{
+        buildContent(niche,goal,type,product);
+        if(loadEl)loadEl.style.display='none';
+        if(r){r.style.display='block';setTimeout(function(){r.classList.add('show');},10);}
+        if(genBtn)genBtn.disabled=false;
+
+        var btnRow=document.getElementById('btnRow');
+        if(btnRow&&!document.getElementById('nvBtn')){
+          var nb=document.createElement('button');
+          nb.id='nvBtn';nb.className='btn-new-version';
+          nb.innerHTML='🔄 Criar Nova Versão';
+          nb.addEventListener('click',function(){generate(true);});
+          btnRow.appendChild(nb);
+          var genBtnEl=btnRow.querySelector('.btn-generate');
+          if(genBtnEl)genBtnEl.classList.remove('full');
+        }
+        var nvBtnAfter=document.getElementById('nvBtn');
+        if(nvBtnAfter)nvBtnAfter.disabled=false;
+
+        buildDots();goToTip(0);
+        if(r)r.scrollIntoView({behavior:'smooth',block:'start'});
+      }catch(e){
+        console.error('generate callback error:',e);
+        if(loadEl)loadEl.style.display='none';
+        if(genBtn)genBtn.disabled=false;
+      }
+    },1600+Math.random()*700);
+  }catch(e){
+    console.error('generate error:',e);
+    var genBtn2=document.getElementById('genBtn');
+    if(genBtn2)genBtn2.disabled=false;
+  }
+}
+
+function buildContent(niche,goal,type,product){
+  var n=NICHE_MAP[niche]||{scene:niche,visual:'cinematic lighting, high detail',product:'produto/serviço',emoji:'✨'};
+  var g=GOAL_MAP[goal]||{hook:'Confira!',tone:'engajador'};
+  var t=TYPE_MAP[type]||{tag:'DESTAQUE',angle:'conteúdo valioso'};
+  var prod=product||n.product;
+  var emojis=randPick(EMOJI_SETS);
+  var hashtags=HASHTAG_POOLS[niche]||'#conteudo #socialmedia #brasil';
+  var qualStr='4K, '+shuffle(['ultra realistic','highly detailed','sharp focus','professional photography']).slice(0,3).join(', ');
+
+  var elIdea=document.getElementById('res-idea');
+  var elCaption=document.getElementById('res-caption');
+  var elImage=document.getElementById('res-image');
+  var elVideo=document.getElementById('res-video');
+  var elCta=document.getElementById('res-cta');
+
+  if(elIdea)elIdea.textContent=emojis[0]+' Estratégia: '+t.tag+' — '+t.angle.toUpperCase()+'\n\nProduto em foco: '+prod.toUpperCase()+'\n\n'+randPick(STRATEGIES)+'\n\nNicho: '+niche+' | Objetivo: '+goal+'\nAbordagem: Formato '+type+' com tom '+g.tone+', destacando seu(sua) '+prod+'.\n\n'+emojis[1]+' Publique entre 18h–21h ou 7h–9h para maior alcance orgânico.';
+  if(elCaption)elCaption.textContent=emojis[0]+' '+randPick(HOOKS).toUpperCase()+'\n\n'+randPick(CAPTION_INTROS)+'\n\n'+n.emoji+' '+t.tag.toUpperCase()+' — '+prod+'!\n\n'+g.hook+' '+emojis[1]+'\n\n👉 '+prod+' feito(a) com qualidade e cuidado especial, pensando em você!\n\n'+emojis[2]+' Somos especialistas em '+niche.toLowerCase()+' e o(a) nosso(a) '+prod+' já transformou a experiência de muitos clientes.\n\n💬 Comenta: o que você mais valoriza em '+niche.toLowerCase()+'?\n🔗 Link na bio!\n\n.\n.\n.\n'+hashtags+' #brasil';
+  if(elImage)elImage.textContent=qualStr+', '+n.visual+', '+prod+', '+n.scene+', commercial advertising style, '+t.angle+', elegant composition, rich textures, cinematic color grading, shallow depth of field, studio quality, trending on Behance';
+  if(elVideo)elVideo.textContent=randPick(VIDEO_INTROS)+' para '+niche.toLowerCase()+' — focado em: '+prod+'.\n\nRoteiro:\n0–3s: Hook visual — close impactante do(a) "'+prod+'"\n3–10s: Demonstração / transformação / resultado com '+prod+'\n10–20s: 3 benefícios do(a) '+prod+' em texto animado\n20–25s: CTA na tela + música trending\n\nEstilo: '+n.visual+', cortes a cada 2-3s\nTrilha: trending TikTok/Reels — energia '+g.tone;
+  if(elCta)elCta.textContent=randPick(['👉 Clique no link da bio e descubra tudo sobre '+prod+'!','💬 Marca um amigo que precisa conhecer '+prod+'!','🔔 Ative o sino para não perder novidades sobre '+prod+'!','📩 DM para receber uma oferta exclusiva de '+prod+'!','🛒 Acesse agora pelo link na bio — estoque de '+prod+' limitado!'])+'\n\n📌 Salva esse post!\n🤩 Compartilha com quem precisa!';
+}
+
+function copyField(id,btn,label){
+  try{
+    var el=document.getElementById(id);
+    if(!el)return;
+    safeCopy(el.textContent).then(function(){
+      try{trackEvent('copy',label);}catch(e){}
+      var o=btn.textContent;btn.textContent='✅ Copiado!';btn.classList.add('copied');
+      setTimeout(function(){btn.textContent=o;btn.classList.remove('copied');},2000);
+    }).catch(function(){
+      btn.textContent='⚠️ Selecione e copie manualmente';
+      setTimeout(function(){btn.textContent='📋 Copiar e Usar';},2500);
+    });
+  }catch(e){console.error('copyField error:',e);}
+}
+
+function copyAll(btn){
+  try{
+    var ids=['res-idea','res-caption','res-image','res-video','res-cta'];
+    var labels=['💡 IDEIA','🧠 LEGENDA','🎨 PROMPT IMAGEM','🎬 PROMPT VÍDEO','📢 CTA'];
+    var full='';
+    ids.forEach(function(id,i){var el=document.getElementById(id);if(el&&el.textContent.trim())full+=labels[i]+'\n'+'─'.repeat(40)+'\n'+el.textContent.trim()+'\n\n';});
+    safeCopy(full.trim()).then(function(){
+      try{trackEvent('copy','tudo');}catch(e){}
+      var o=btn.textContent;btn.textContent='✅ Tudo Copiado!';
+      setTimeout(function(){btn.textContent=o;},2500);
+    }).catch(function(){
+      btn.textContent='⚠️ Selecione e copie manualmente';
+      setTimeout(function(){btn.textContent='📎 Copiar Tudo';},2500);
+    });
+  }catch(e){console.error('copyAll error:',e);}
+}
+
+/* ─── BIND ALL EVENTS AFTER DOM READY ─── */
+document.addEventListener('DOMContentLoaded',function(){
+  try{
+    /* Float WhatsApp */
+    var floatWa=document.getElementById('float-wa');
+    if(floatWa)floatWa.addEventListener('click',function(){openWhatsApp('flutuante');});
+
+    /* Ideia Hoje */
+    var btnIdeia=document.getElementById('btnIdeiaHoje');
+    if(btnIdeia)btnIdeia.addEventListener('click',function(){ideaHoje();});
+
+    /* Generate */
+    var genBtn=document.getElementById('genBtn');
+    if(genBtn)genBtn.addEventListener('click',function(){generate(false);});
+
+    /* Copy buttons (data-copy-target) */
+    document.querySelectorAll('.copy-btn[data-copy-target]').forEach(function(btn){
+      btn.addEventListener('click',function(){
+        copyField(btn.getAttribute('data-copy-target'),btn,btn.getAttribute('data-copy-label')||'');
+      });
+    });
+
+    /* Copy All */
+    var btnCopyAll=document.getElementById('btnCopyAll');
+    if(btnCopyAll)btnCopyAll.addEventListener('click',function(){copyAll(btnCopyAll);});
+
+    /* Regen bottom */
+    var btnRegen=document.getElementById('btnRegenBottom');
+    if(btnRegen)btnRegen.addEventListener('click',function(){generate(true);});
+
+    /* Save time WA */
+    var btnStt=document.getElementById('btnSttWa');
+    if(btnStt)btnStt.addEventListener('click',function(){openWhatsApp('dica_inline');});
+
+    /* Main WA card */
+    var btnWaMain=document.getElementById('btnWaMain');
+    if(btnWaMain)btnWaMain.addEventListener('click',function(){openWhatsApp('card_principal');});
+
+    /* Instagram */
+    var btnInsta=document.getElementById('btnInstagram');
+    if(btnInsta)btnInsta.addEventListener('click',function(){openInstagram();});
+
+    /* WA footer */
+    var btnWaFoot=document.getElementById('btnWaFooter');
+    if(btnWaFoot)btnWaFoot.addEventListener('click',function(){openWhatsApp('footer_instagram');});
+
+    /* Welcome overlay: JS fallback to ensure it never blocks interaction */
+    var welcomeEl=document.getElementById('welcome');
+    if(welcomeEl){
+      /* Click to dismiss immediately */
+      welcomeEl.addEventListener('click',function(){
+        welcomeEl.style.opacity='0';
+        welcomeEl.style.pointerEvents='none';
+        welcomeEl.style.visibility='hidden';
+      });
+      /* Fallback timer: force remove after 4s even if CSS animation fails */
+      setTimeout(function(){
+        if(welcomeEl){
+          welcomeEl.style.opacity='0';
+          welcomeEl.style.pointerEvents='none';
+          welcomeEl.style.visibility='hidden';
+        }
+      },4000);
+    }
+
+  }catch(e){console.error('DOMContentLoaded bind error:',e);}
+});
+
+})();
+</script>
+</body>
+</html>
